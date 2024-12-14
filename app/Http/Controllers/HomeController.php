@@ -208,27 +208,17 @@ class HomeController extends Controller
     
     public function checkout()
     {
-        if (Auth::check()) {
-            $user = Auth::user();
-            $user_id = $user->user_id;
-    
-            // Call the calculate_cart_total function using a raw SQL query
-            $totalPrice = DB::selectOne('SELECT calculate_cart_total(?) AS total', [$user_id]);
-    
-            // Retrieve all cart items for the logged-in user
-            $cartItems = Cart::where('user_id', $user_id)->get();
-    
-            // If no total price is returned, default to 0
-            $totalPrice = $totalPrice ? $totalPrice->total : 0;
-    
-            // Add shipping fee (if applicable)
-            $shippingFee = 300;
-            $totalAmount = $totalPrice + $shippingFee;
-    
-            return view('user.checkout', compact('cartItems', 'totalPrice', 'shippingFee', 'totalAmount'));
-        } else {
-            return redirect()->route('login')->with('error', 'Please log in to checkout.');
-        }
+        // Assuming we have the user's cart items in the session or database
+        $cartItems = Cart::where('user_id', auth()->id())->get();
+        $totalPrice = $cartItems->sum(fn($item) => $item->price * $item->quantity);
+        $shippingFee = 300; // Shipping fee example
+
+        return view('user.checkout', [
+            'cartItems' => $cartItems,
+            'totalPrice' => $totalPrice,
+            'shippingFee' => $shippingFee,
+            'totalAmount' => $totalPrice + $shippingFee
+        ]);
     }
     
 }

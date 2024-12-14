@@ -106,7 +106,7 @@
                                 </dl>
                             </div>
 
-                            <form action="{{url('/checkout')}}" method="GET" class="w-full">
+                            <form action="{{route('cart.checkout')}}" method="GET" class="w-full">
                                 <button type="submit" class="w-full flex items-center justify-center rounded-lg bg-black px-5 py-2.5 text-sm font-medium text-white">
                                     Proceed to checkout
                                 </button>
