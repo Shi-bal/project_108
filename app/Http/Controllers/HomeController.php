@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Product;
 use App\Models\Cart;
 use App\Models\Wishlist;
+use App\Models\PopularProduct;
 
 
 use Illuminate\Support\Facades\DB;
@@ -15,11 +16,18 @@ use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
-
     public function index()
     {
-        return view('user.home');
+        // Query the view to get all products
+        $products = DB::select('SELECT * FROM product_details_view');
+    
+        // Fetch popular products from the view
+        $popularProducts = PopularProduct::orderBy('cart_count', 'desc')->get();
+    
+        // Pass both products and popular products to the view
+        return view('user.home', compact('products', 'popularProducts'));
     }
+    
 
     public function redirect()
     {

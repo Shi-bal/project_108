@@ -33,32 +33,63 @@
     </div>
 
     <div class="p-20 sm:p-20">
-    <div>
-        <p class="font-semibold text-2xl sm:font-medium sm:text-2xl sm:mb-6">See What's New</p>
-    </div>
+        <div>
+            <p class="font-semibold text-2xl sm:font-medium sm:text-2xl sm:mb-6">See What's New</p>
+        </div>
         <div class="flex justify-center">
-
             <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-8">
-
-
-                <div class="flex flex-col">
-                    <div class="h-[600px] items-center justify-center">
-                    <a href="#" class="h-full w-full">
-                        <img src="{{ URL('images/shoes/aj1midwhite.jpg') }}" alt="" class="object-cover h-full w-full">
-                    </a>
-                    </div>
-                    <div class="py-4">
-                        <p class="font-semibold">Air Jordan Mid</p>
-                        <p>2 Variants</p>
-                        <div class="mt-2">
-                            <p class="text-gray-500">₱15,000</p>
+                @foreach ($products as $prod)
+                    <div class="flex flex-col">
+                        <div class="h-[600px] items-center justify-center">
+                        <a href="{{url('product_details', $prod->product_id)}}" class="h-full w-full">
+                            <img src="{{ URL('product/' . $prod->image1) }}" alt="" class="object-cover h-full w-full">
+                        </a>
                         </div>
+                        <div class="py-4">
+                            <p class="font-semibold">{{ $prod->product_title }}</p>
+                            <p>{{ $prod->quantity }} Variants</p>
+                            <div class="mt-2">
+                                <p class="text-gray-500">₱{{ number_format($prod->price, 2) }}</p>
+                            </div>
 
+                        </div>
                     </div>
-                </div>
-
-                
+                @endforeach
+            </div>
         </div>
     </div>
+
+    <div class="p-20 sm:p-20">
+        <div>
+            <p class="font-semibold text-2xl sm:font-medium sm:text-2xl sm:mb-6">Popular</p>
+        </div>
+        <div class="flex justify-center">
+            <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                @foreach ($popularProducts as $product)
+                    <div class="flex flex-col">
+                        <div class="h-[600px] items-center justify-center">
+                        <a href="{{url('product_details', $product->product_id)}}" class="h-full w-full">
+                            <img src="{{ URL('product/' . $product->image1) }}" alt="" class="object-cover h-full w-full">
+                        </a>
+                        </div>
+                        <div class="py-4">
+                            <p class="font-semibold">{{ $product->product_title }}</p>
+                            <div class="mt-2">
+                                <p class="text-gray-500">₱{{ number_format($product->price, 2) }}</p>
+                            </div>
+                            <div class="mt-2">
+                                <p class="text-gray-500">In {{ $product->cart_count }} carts</p>
+                            </div>
+                            <div class="mt-0">
+                                <p class="text-gray-500">In {{ $product->wishlist_count }} wishlists</p>
+                            </div>
+
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+
     </body>
 </html>
