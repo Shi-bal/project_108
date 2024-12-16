@@ -180,7 +180,7 @@
               <div class="space-y-2">
                   <dl class="flex items-center justify-between gap-4">
                       <dt class="text-base font-normal text-gray-500">Bag</dt>
-                      <dd class="text-base font-medium text-gray-900 ">₱{{ number_format($totalPrice, 2) }}</dd>
+                      <dd class="text-base font-medium text-gray-900">₱{{ number_format($totalAmount, 2) }}</dd>
                   </dl>
                   <dl class="flex items-center justify-between gap-4">
                       <dt class="text-base font-normal text-gray-500">Shipping Fee</dt>

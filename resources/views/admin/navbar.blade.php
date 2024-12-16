@@ -66,8 +66,15 @@
     
             <li>
                 <a href="{{url('/view_top_buyer')}}" class="flex items-center p-2 rounded-lg group">
-                    <i class="ph-bold ph-eye"></i>
-                    <span class="flex-1 ms-3 whitespace-nowrap">View Top Buyer</span>
+                    <i class="ph-bold ph-bag"></i>
+                    <span class="flex-1 ms-3 whitespace-nowrap">View Top Buyers</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="{{url('/show_users')}}" class="flex items-center p-2 rounded-lg group">
+                    <i class="ph-bold ph-user"></i>
+                    <span class="flex-1 ms-3 whitespace-nowrap">Manage Users</span>
                 </a>
             </li>
 

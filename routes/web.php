@@ -83,4 +83,11 @@ Route::get('/order_page', [OrderController::class, 'order_page'])->name('order.p
 
 //ADMIN ROUTES
 
+
 Route::get('/view_top_buyer', [AdminController::class, 'top_buyer']);
+
+Route::get('/show_users', [AdminController::class, 'show_users']);
+
+Route::delete('/users/{id}', [AdminController::class, 'remove_user'])->name('user.remove');
+
+Route::put('/users/{id}', [AdminController::class, 'edit_role'])->name('user.edit_role');
