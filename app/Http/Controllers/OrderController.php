@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
-    public function placeOrder(Request $request)
+public function placeOrder(Request $request)
 {
     // Get the authenticated user
     $user = Auth::user();
@@ -30,18 +30,26 @@ class OrderController extends Controller
         return $cart->price * $cart->quantity;
     });
 
-    // Create a new order
+        $totalQuantity = $cartItems->sum('quantity'); // Sum of quantities in the cart
+        $size = $cartItems->first()->size;
+    
+        // Create a new order with total price and total quantity
     $order = Order::create([
         'user_id' => $user->user_id,
         'total_price' => $totalPrice,
+        'quantity' => $totalQuantity, // Add quantity to the order
         'payment_status' => 'Pending', // Default value, you can adjust
         'delivery_status' => 'Pending', // Default value, you can adjust
+        'size' => $size,
     ]);
 
     // Move cart items to the order by updating the 'order_id' field
     foreach ($cartItems as $cart) {
         $cart->update(['order_id' => $order->order_id]);
     }
+    
+        // Delete the items from the cart
+        Cart::where('user_id', $user->user_id)->delete();
 
     // Insert delivery information into the OrderDetails table
     OrderDetail::create([
@@ -60,5 +68,16 @@ class OrderController extends Controller
     // Return a success message
     return redirect()->back()->with('message', 'Order placed successfully');
 }
+    
+public function order_page()
+{
+    // Fetch order summary data from the view
+    $userOrderSummaries = DB::table('order_details_view')->get();
 
+    // Dump the data to inspect the structure
+    // dd($userOrderSummaries);
+
+    // Pass the data to the view
+    return view('user.order_page', compact('userOrderSummaries'));
+}
 }

@@ -18,6 +18,11 @@ class HomeController extends Controller
 {
     public function index()
     {
+        // Fetch data from the 'popular_products' view
+        $popularProducts = DB::table('popular_products')->get();
+
+
+        // Return the data to the view called 'user.home'
         // Query the view to get all products
         $products = DB::select('SELECT * FROM product_details_view');
     
@@ -25,7 +30,8 @@ class HomeController extends Controller
         $popularProducts = PopularProduct::orderBy('cart_count', 'desc')->get();
     
         // Pass both products and popular products to the view
-        return view('user.home', compact('products', 'popularProducts'));
+        return view('user.home', compact('products', 'popularProducts'), compact('popularProducts')); // Use 'popularProducts' instead of 'popular'
+
     }
     
 
@@ -166,7 +172,7 @@ class HomeController extends Controller
             $cart->user_id = $user->user_id;
             $cart->product_title = $product->product_title;
             $cart->price = $product->price;
-            $cart->image1 = $request->selected_image;
+            $cart->image1 = $request->image1;
             $cart->product_id = $product->product_id;
             $cart->quantity = $request->quantity;
             $cart->size = $request->size;
@@ -228,6 +234,9 @@ class HomeController extends Controller
             'totalAmount' => $totalPrice + $shippingFee
         ]);
     }
+    
+
+ 
     
 }
 
