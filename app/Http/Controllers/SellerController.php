@@ -3,25 +3,35 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
-
 use Illuminate\Http\Request;
-use App\Models\Product;
-
+use Illuminate\Support\Facades\Auth; // Import Auth facade
 
 class SellerController extends Controller
 {
-    //
+    // Constructor to check if the user is authenticated and is a seller
+    public function __construct()
+    {
+        // No middleware, just restrict access directly in the methods
+    }
 
     public function view_product()
     {
+        // Check if the user is authenticated and is a seller
+        if (!Auth::check() || Auth::user()->usertype != 'seller') {
+            return redirect('/'); // Redirect if not authenticated or not a seller
+        }
 
         return view('seller.product');
     }
 
-
     public function add_product(Request $request)
     {
-        // Your existing logic to handle image uploads
+        // Check if the user is authenticated and is a seller
+        if (!Auth::check() || Auth::user()->usertype != 'seller') {
+            return redirect('/'); // Redirect if not authenticated or not a seller
+        }
+
+        // Handle image uploads
         $image1 = null;
         $image2 = null;
         $image3 = null;
@@ -62,32 +72,47 @@ class SellerController extends Controller
 
     public function show_product()
     {
+        // Check if the user is authenticated and is a seller
+        if (!Auth::check() || Auth::user()->usertype != 'seller') {
+            return redirect('/'); // Redirect if not authenticated or not a seller
+        }
 
         $products = DB::table('products')->get();
-
-        return view ('seller.show_product', compact('products'));
+        return view('seller.show_product', compact('products'));
     }
 
     public function removeProduct($product_id)
     {
-      
-        DB::table('products')->where('product_id', $product_id)->delete();
+        // Check if the user is authenticated and is a seller
+        if (!Auth::check() || Auth::user()->usertype != 'seller') {
+            return redirect('/'); // Redirect if not authenticated or not a seller
+        }
 
+        DB::table('products')->where('product_id', $product_id)->delete();
         return redirect()->back()->with('success', 'Product deleted successfully!');
     }
 
-    public function show_orders(){
+    public function show_orders()
+    {
+        // Check if the user is authenticated and is a seller
+        if (!Auth::check() || Auth::user()->usertype != 'seller') {
+            return redirect('/'); // Redirect if not authenticated or not a seller
+        }
 
-            // Fetch order summary data from the view
-        $orders = DB::table('order_details_seller_view')->get();
-
+        // Fetch order summary data from the view
+        $orders = DB::table('order_details_view')->get();
         return view('seller.show_orders', compact('orders'));
     }
 
     public function delivered($order_id)
     {
+        // Check if the user is authenticated and is a seller
+        if (!Auth::check() || Auth::user()->usertype != 'seller') {
+            return redirect('/'); // Redirect if not authenticated or not a seller
+        }
+
         // Fetch the order from the view
-        $order = DB::table('order_details_seller_view')->where('order_id', $order_id)->first();
+        $order = DB::table('order_details_view')->where('order_id', $order_id)->first();
     
         if (!$order) {
             return redirect()->back()->with('error', 'Order not found.');
@@ -101,6 +126,4 @@ class SellerController extends Controller
     
         return redirect()->back()->with('success', 'Order marked as delivered.');
     }
-    
-
 }
