@@ -42,15 +42,15 @@
                     <tr class="border-b text-black">
                         <td class="px-6 py-4">{{$product->product_title}}</td>
                         <td class="px-6 py-4">{{$product->description}}</td>
-                        <td class="px-6 py-4">{{$product->quantity}}</td>
+                        <td class="px-6 py-4 text-center">{{$product->quantity}}</td>
                         <td class="px-6 py-4">₱{{number_format($product->price)}}</td>
-                        <td class="px-6 py-4">
+                        <td class="px-1 py-4">
                             <img class="" src="/product/{{$product->image1}}">
                         </td>
-                        <td class="px-6 py-4">
+                        <td class="px-1 py-4">
                             <img class="" src="/product/{{$product->image2}}">
                         </td>
-                        <td class="px-6 py-4">
+                        <td class="px-1 py-4">
                             <img class="" src="/product/{{$product->image3}}">
                         </td>
 

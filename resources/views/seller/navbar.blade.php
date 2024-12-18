@@ -51,13 +51,6 @@
     <div class="h-full px-3 py-4 overflow-y-auto shadow bg-white">
         <ul class="space-y-2 font-medium">
             <li>
-                <a href="{{url('/redirect')}}" id="dashboard-link" class="flex items-center p-2 rounded-lg group">
-                    <i class="ph-bold ph-chart-pie"></i>
-                    <span class="ms-3">Dashboard</span>
-                </a>
-            </li>
-            
-            <li>
                 <a href="{{url('/show_product')}}" class="flex items-center p-2 rounded-lg group">
                     <i class="ph-bold ph-eye"></i>
                     <span class="flex-1 ms-3 whitespace-nowrap">Show Products</span>
@@ -71,7 +64,7 @@
             </li>
             <li>
                 <a href="{{route('show.orders')}}" class="flex items-center p-2 rounded-lg group">
-                    <i class="ph-bold ph-eye"></i>
+                    <i class="ph-bold ph-package"></i>
                     <span class="flex-1 ms-3 whitespace-nowrap">View Orders</span>
                 </a>
             </li>

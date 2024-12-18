@@ -23,33 +23,35 @@
 
 <div class="p-4 sm:ml-64">
 <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
-    <h2 class="text-xl font-semibold text-gray-900 sm:text-2xl m-5">Orders</h2>
-    <table class="w-full text-sm text-left mt-5">
-        <thead class="uppercase">
-            <tr class="border-2">
-                <th scope="col" class="px-6 py-3">Log ID</th>
-                <th scope="col" class="px-6 py-3">Usertype</th>
-                <th scope="col" class="px-6 py-3">Action Performed</th>
-                <th scope="col" class="px-6 py-3">Table Name</th>
-                <th scope="col" class="px-6 py-3">Column Data</th>
+    <div class="m-4">
+        <h2 class="text-xl font-semibold text-gray-900 sm:text-2xl m-5">Activity Logs</h2>
+        <table class="w-full text-sm text-left mt-5 border-2">
+            <thead class="uppercase">
+                <tr class="border-2">
+                    <th scope="col" class="px-6 py-3">Log ID</th>
+                    <th scope="col" class="px-6 py-3">Usertype</th>
+                    <th scope="col" class="px-6 py-3">Action Performed</th>
+                    <th scope="col" class="px-6 py-3">Table Name</th>
+                    <th scope="col" class="px-6 py-3">Column Data</th>
 
-      
+        
+                </tr>
+            </thead>
+            <tbody>
+            @foreach ($activityLogs as $log)
+
+            <tr class="border-b text-black">
+                <td class="px-6 py-4">{{ $log->log_id }}</td>
+                <td class="px-6 py-4">{{ $log->usertype }}</td>
+                <td class="px-6 py-4">{{ $log->action_performed }}</td>
+                <td class="px-6 py-4">{{ $log->table_name }}</td>
+                <td class="px-6 py-4">{{ $log->column_data }}</td>
+
+            @endforeach
             </tr>
-        </thead>
-        <tbody>
-        @foreach ($activityLogs as $log)
-
-        <tr class="border-b text-black">
-            <td class="px-6 py-4">{{ $log->log_id }}</td>
-            <td class="px-6 py-4">{{ $log->usertype }}</td>
-            <td class="px-6 py-4">{{ $log->action_performed }}</td>
-            <td class="px-6 py-4">{{ $log->table_name }}</td>
-            <td class="px-6 py-4">{{ $log->column_data }}</td>
-
-        @endforeach
-        </tr>
-    </tbody>
-    </table>
+        </tbody>
+        </table>
+    </div>
 </div>
 
 </div>

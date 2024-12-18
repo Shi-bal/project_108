@@ -25,18 +25,18 @@
 
                         @foreach($cartItems as $item)
                             <div class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm md:p-6">
-                                <div class="grid grid-cols-5">
-                                    <div class="col-span-1">
-                                        <a href="#" class="">
-                                            <img class="h-40" src="{{ asset('product/' . $item->product->image1) }}" alt="Product" class="object-cover size-14 hover-image pb-[2px] hover:bg-black">
+                                <div class="grid grid-cols-6 sm:grid-cols-5 gap-4">
+                                    <div class="col-span-2 sm:col-span-1">
+                                        <a href="{{ url('product_details', $item->product_id) }}" class="">
+                                            <img class="h-40 w-40 object-cover" src="{{ asset('product/' . $item->product->image1) }}" alt="Product">
                                         </a>
                                     </div>
-                                    <div class="col-span-3">
-                                        <a href="#" class="text-base font-medium text-gray-900 hover:underline ">{{ $item->product->product_title }}</a>
+                                    <div class="col-span-3 sm:col-span-3">
+                                        <a href="{{ url('product_details', $item->product_id) }}" class="text-base font-medium text-gray-900 hover:underline ">{{ $item->product->product_title }}</a>
                                         <p class="text-sm text-gray-500 font-medium">Size: {{ $item->size }}</p>
                                         <p class="text-sm text-gray-500 font-medium">Quantity: {{ $item->quantity }}</p>
                                     </div>
-                                    <div class="col-span-1 flex flex-col justify-between items-end">
+                                    <div class="col-span-1 sm:col-span-1 flex flex-col justify-between items-end">
                                         <form action="{{ route('remove_cart', $item->cart_id) }}" method="POST">
                                             @csrf
                                             @method('DELETE') <!-- Specify the DELETE method -->

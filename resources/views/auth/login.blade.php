@@ -46,7 +46,7 @@
                     <span class="absolute inset-y-0 left-0 flex items-center p-1 pl-3">
                         <i class="ph-bold ph-envelope-simple"></i>
                     </span>
-                    <input type="email" id="email" name="email" value="{{ old('email') }}" required autofocus class="pl-12 mb-2 bg-gray-50 text-gray-600 border border-gray-300 rounded-lg block w-full p-2.5 focus:outline-none focus:ring-1 focus:ring-gray-400" placeholder="Email Address" autocomplete="username">
+                    <input type="email" id="email" name="email" value="{{ old('email') }}" required autofocus maxlength="40" pattern="[a-zA-Z0-9@.]*" class="pl-12 mb-2 bg-gray-50 text-gray-600 border border-gray-300 rounded-lg block w-full p-2.5 focus:outline-none focus:ring-1 focus:ring-gray-400" placeholder="Email Address" autocomplete="username">
                 </div>
             </div>
 
@@ -57,14 +57,14 @@
                     <span class="absolute inset-y-0 left-0 flex items-center p-1 pl-3">
                         <i class="ph-bold ph-key"></i>
                     </span>
-                    <input type="password" id="password" name="password" required class="pl-12 mb-2 bg-gray-50 text-gray-600 border border-gray-300 rounded-lg block w-full p-2.5 focus:outline-none focus:ring-1 focus:ring-gray-400" placeholder="••••••••••" autocomplete="current-password">
+                    <input type="password" id="password" name="password" required maxlength="25" pattern="[a-zA-Z0-9]*" class="pl-12 mb-2 bg-gray-50 text-gray-600 border border-gray-300 rounded-lg block w-full p-2.5 focus:outline-none focus:ring-1 focus:ring-gray-400" placeholder="••••••••••" autocomplete="current-password">
                 </div>
             </div>
 
             <!-- Login Button -->
             <button type="submit" class="w-full text-white bg-[#000000] rounded-lg text-sm px-5 py-2.5 text-center mb-6 focus:ring-4 focus:ring-primary-300">Login</button>
 
-            <!-- Fregister -->
+            <!-- Register -->
             @if (Route::has('password.request'))
                 <div class="flex justify-center">
                     <a class="text-sm text-gray-500 hover:text-gray-900 hover:underline" href="{{ route('register') }}">Don't have an account yet? Register</a>

@@ -34,8 +34,9 @@
                     <div class="py-2">
                         <div class=""><a href="{{ url('product_details', $product->product_id) }}">
                             <p class="font-semibold">{{ $product->product_title }}</p>
-                            <p class="mt-1 font-semibold">₱{{ number_format($product->price, 2) }}</p></a>
-                            <p class="mt-1 text-gray-500">{{($product->quantity) }} Available</p>
+                            <p class="text-gray-500">{{ $product->description }}</p>
+                            <p class="text-gray-500">{{($product->quantity) }} Available</p>
+                            <p class="mt-2 font-semibold">₱{{ number_format($product->price, 2) }}</p></a>
                         </div>
                     </div>
                 </div>

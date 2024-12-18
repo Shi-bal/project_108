@@ -30,7 +30,7 @@
 
                 <div class="col-span-2 mt-6 sm:mt-8 lg:mt-0">
                     <p class="text-2xl font-bold sm:text-3xl ">{{ $product->product_title }}</p>
-
+                    <p class="mt-2 text-gray-500">{{ $product->description }}</p>
                     <div class="mt-4 sm:items-center sm:gap-4 sm:flex">
                         <h1 class="text-lg font-semibold sm:text-xl">₱{{ number_format($product->price, 2) }}</h1>
                     </div>
@@ -101,8 +101,11 @@
 
         sizeButtons.forEach(button => {
             button.addEventListener('click', function() {
-                sizeButtons.forEach(btn => btn.classList.remove('bg-gray-200'));
-                this.classList.add('bg-gray-200');
+                sizeButtons.forEach(btn => {
+                    btn.classList.remove('bg-black', 'text-white');
+                    btn.classList.add('text-black');
+                });
+                this.classList.add('bg-black', 'text-white');
                 selectedSizeInput.value = this.getAttribute('data-size');
                 sizeError.classList.add('hidden');
             });
@@ -150,8 +153,8 @@
 
             sizeButtons.forEach(button => {
                 button.addEventListener('click', function() {
-                    sizeButtons.forEach(btn => btn.classList.remove('bg-gray-200'));
-                    this.classList.add('bg-gray-200');
+                    sizeButtons.forEach(btn => btn.classList.remove('bg-black', 'text-white'));
+                    this.classList.add('bg-black', 'text-white');
                     selectedSizeInput.value = this.getAttribute('data-size');
                     sizeSelected = true;
                 });

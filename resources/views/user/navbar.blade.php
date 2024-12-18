@@ -136,7 +136,7 @@
                 <!-- Bag Icon with Order Dropdown -->
                 <div class="relative inline-block group">
                     <!-- Trigger button with Bag Icon -->
-                    <a href="">
+                    <a href="{{ route('showcart.view') }}">
                         <button><i class="ph-bold ph-bag"></i></button>
                     </a>
 

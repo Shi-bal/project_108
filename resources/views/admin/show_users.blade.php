@@ -40,7 +40,8 @@
 
         <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
             <h2 class="text-xl font-semibold text-gray-900 sm:text-2xl m-5">Users</h2>
-            <table class="w-full text-sm text-left">
+            <div class="m-4">
+            <table class="w-full text-sm text-left border-2">
                 <thead class="uppercase">
                     <tr class="border-2">
                         <th scope="col" class="px-6 py-3">Username</th>
@@ -59,7 +60,7 @@
                         <td class="px-6 py-4">{{$user->created_at}}</td>
                         <td class="px-6 py-4">
                             {{$user->usertype}}
-                            <button class="edit-button text-sm font-medium hover:underline text-gray-600" onclick="toggleEditForm({{ $user->user_id }})">
+                            <button class="edit-button text-sm font-medium hover:underline text-gray-600" onclick="toggleEditForm('{{ $user->user_id }}')">
                                 <i class="fa-solid fa-x me-1.5 text-gray-600"></i>Edit
                             </button>
 
@@ -89,6 +90,7 @@
                     @endforeach
                 </tbody>
             </table>
+            </div>
         </div>
 
         </div>

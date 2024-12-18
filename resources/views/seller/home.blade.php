@@ -14,6 +14,5 @@
 
     <body>
     @include('seller.navbar')
-
     </body>
 </html>

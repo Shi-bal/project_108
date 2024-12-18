@@ -10,7 +10,6 @@
 
 <x-guest-layout>
 
-
     <div class="flex flex-col w-full md:w-1/2 xl:w-2/5 2xl:w-2/5 3xl:w-1/3 mx-auto p-8 md:p-10 2xl:p-12 3xl:p-14 mt-20 rounded-2xl shadow-xl">
         <div class="flex flex-row gap-3 pb-4">
             <div class="flex justify-center w-full">
@@ -25,7 +24,7 @@
                 <label for="name" class="block mb-2 text-sm font-medium text-[#111827]">Name</label>
                 <div class="relative text-gray-400">
                     <span class="absolute inset-y-0 left-0 flex items-center p-1 pl-3"><i class="ph-bold ph-user"></i></span>
-                    <input type="text" name="name" id="name" class="pl-12 mb-2 bg-gray-50 text-gray-600 border border-gray-300 sm:text-sm rounded-lg focus:ring-1 focus:ring-gray-400 block w-full p-2.5" placeholder="Your Name" required autofocus autocomplete="name">
+                    <input type="text" name="name" id="name" class="pl-12 mb-2 bg-gray-50 text-gray-600 border border-gray-300 sm:text-sm rounded-lg focus:ring-1 focus:ring-gray-400 block w-full p-2.5" placeholder="Your Name" required autofocus autocomplete="name" maxlength="50" pattern="[A-Za-z0-9 ]+">
                 </div>
             </div>
             
@@ -33,7 +32,7 @@
                 <label for="email" class="block mb-2 text-sm font-medium text-[#111827]">Email</label>
                 <div class="relative text-gray-400">
                     <span class="absolute inset-y-0 left-0 flex items-center p-1 pl-3"><i class="ph-bold ph-envelope-simple"></i></span>
-                    <input type="email" name="email" id="email" class="pl-12 mb-2 bg-gray-50 text-gray-600 border border-gray-300 sm:text-sm rounded-lg focus:ring-1 focus:ring-gray-400 block w-full p-2.5" placeholder="Email Address" required autocomplete="username">
+                    <input type="email" name="email" id="email" class="pl-12 mb-2 bg-gray-50 text-gray-600 border border-gray-300 sm:text-sm rounded-lg focus:ring-1 focus:ring-gray-400 block w-full p-2.5" placeholder="Email Address" required autocomplete="username" maxlength="40" pattern="[A-Za-z0-9@.]+">
                 </div>
             </div>
 
@@ -41,7 +40,7 @@
                 <label for="password" class="block mb-2 text-sm font-medium text-[#111827]">Password</label>
                 <div class="relative text-gray-400">
                     <span class="absolute inset-y-0 left-0 flex items-center p-1 pl-3"><i class="ph-bold ph-key"></i></span>
-                    <input type="password" name="password" id="password" class="pl-12 mb-2 bg-gray-50 text-gray-600 border border-gray-300 sm:text-sm rounded-lg focus:ring-1 focus:ring-gray-400 block w-full p-2.5" placeholder="••••••••••" required autocomplete="new-password">
+                    <input type="password" name="password" id="password" class="pl-12 mb-2 bg-gray-50 text-gray-600 border border-gray-300 sm:text-sm rounded-lg focus:ring-1 focus:ring-gray-400 block w-full p-2.5" placeholder="••••••••••" required autocomplete="new-password" maxlength="25" pattern="[A-Za-z0-9]+">
                 </div>
             </div>
 
@@ -49,8 +48,9 @@
                 <label for="password_confirmation" class="block mb-2 text-sm font-medium text-[#111827]">Confirm Password</label>
                 <div class="relative text-gray-400">
                     <span class="absolute inset-y-0 left-0 flex items-center p-1 pl-3"><i class="ph-bold ph-key"></i></span>
-                    <input type="password" name="password_confirmation" id="password_confirmation" class="pl-12 mb-2 bg-gray-50 text-gray-600 border border-gray-300 sm:text-sm rounded-lg focus:ring-1 focus:ring-gray-400 block w-full p-2.5" placeholder="••••••••••" required autocomplete="new-password">
+                    <input type="password" name="password_confirmation" id="password_confirmation" class="pl-12 mb-2 bg-gray-50 text-gray-600 border border-gray-300 sm:text-sm rounded-lg focus:ring-1 focus:ring-gray-400 block w-full p-2.5" placeholder="••••••••••" required autocomplete="new-password" maxlength="25" pattern="[A-Za-z0-9]+">
                 </div>
+                <p id="password-error" class="text-red-500 text-sm mt-2 hidden">Passwords do not match</p>
             </div>
 
             @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
@@ -87,3 +87,20 @@
         </form>
     </div>
 </x-guest-layout>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const password = document.getElementById('password');
+        const passwordConfirmation = document.getElementById('password_confirmation');
+        const form = password.closest('form');
+        const passwordError = document.getElementById('password-error');
+
+        form.addEventListener('submit', function (event) {
+            if (password.value !== passwordConfirmation.value) {
+                event.preventDefault();
+                passwordError.classList.remove('hidden');
+            } else {
+                passwordError.classList.add('hidden');
+            }
+        });
+    });
+</script>

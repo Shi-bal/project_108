@@ -24,14 +24,15 @@
                             <h2 class="text-xl font-semibold text-gray-900 sm:text-2xl">Your Wishlist</h2>
                             @forelse ($wishlistItems as $item)
                                 <hr class="my-4 border-t-2 border-gray-200 w-full">
-                                <div class="space-y-4 md:flex md:gap-6 md:space-y-0">
+                                <div class="space-y-4 flex gap-6 md:space-y-0">
                                     
-                                    <a href="#" class="">
-                                        <img class="h-40" src="{{ URL('product/' . $item->image1) }}" alt="Product" class="object-cover size-14 hover-image pb-[2px] hover:bg-black">
+                                    <a href="{{ url('product_details', $item->product_id) }}" class="">
+                                        <img class="h-40 w-40 object-cover" src="{{ URL('product/' . $item->image1) }}" alt="Product">
                                     </a>
                                     <div class="grid grid-cols-4 w-full">
                                         <div class="col-span-3">
                                             <p class="font-semibold">{{ $item->product_title }}</p>
+                                            <p class="text-gary-500">{{ $item->description }}</p>
                                             <p class="font-bold">₱{{ number_format($item->price, 2) }}</p>
                                         </div>
                                         <div class="col-span-1 flex flex-row items-center justify-center">
