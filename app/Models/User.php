@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class User extends Authenticatable
 {
@@ -66,5 +67,17 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+
+    public static function logActivity($user, $action, $details)
+    {
+        activity()
+            ->causedBy($user)
+            ->withProperties([
+                'action_performed' => $action,
+                'details' => $details,
+            ])
+            ->log('User activity');
     }
 }

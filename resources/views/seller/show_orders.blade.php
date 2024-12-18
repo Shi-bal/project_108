@@ -43,8 +43,9 @@
                             <p class="font-semibold">Product: {{ $order->product_titles }}</p>
                             <p class=""><span class="font-semibold">Size: </span>{{ $order->sizes }}</p>
                             <p class=""><span class="font-semibold">Quantity: </span>{{ $order->quantities }}</p>
-                            <p class=""><span class="font-semibold">Price: </span>₱{{number_format($order->product_prices, 2) }}</p>
-                            <p class="font-semibold">Total Price: </span>₱{{number_format($order->total_price, 2) }}</p>
+                            <p class=""><span class="font-semibold">Price: </span>₱{{ number_format((float)$order->product_prices, 2) }}</p>
+                            <p class="font-semibold">Total Price: ₱{{ number_format((float)$order->total_price, 2) }}</p>
+
                         </div>
                         <div class="col-span-1">
                             <p class=""><span class="font-semibold">Payment Status: </span>{{ $order->payment_status }}</p>

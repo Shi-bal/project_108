@@ -26,7 +26,7 @@
                                 <hr class="my-4 border-t-2 border-gray-200 w-full">
                                 <div class="space-y-4 md:flex md:gap-6 md:space-y-0">
                                     
-                                    <a href="#" class="">
+                                    <a href="" class="">
                                         <img class="h-40" src="{{ URL('product/' . $item->image1) }}" alt="Product" class="object-cover size-14 hover-image pb-[2px] hover:bg-black">
                                     </a>
                                     <div class="grid grid-cols-4 w-full">

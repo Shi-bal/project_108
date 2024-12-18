@@ -5,11 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use App\Traits\ActivityLogger;
+
+
 
 use App\Models\User;
 
 class AdminController extends Controller
 {
+    use ActivityLogger;
+
     public function __construct()
     {
         // No middleware needed here
@@ -56,13 +61,34 @@ class AdminController extends Controller
 
     public function remove_user($user_id)
     {
+        // Check if the user is authenticated and has admin privileges
         if (Auth::check() && Auth::user()->usertype != 'admin') {
-            return redirect('/'); // Redirect if not admin
+            return redirect('/'); // Redirect if not an admin
         }
+
+        // Retrieve the user details before deletion
+        $user = DB::table('users')->where('user_id', $user_id)->first();
+
+        if (!$user) {
+            return redirect()->back()->with('error', 'User not found.');
+        }
+
+        // Delete the user
         DB::table('users')->where('user_id', $user_id)->delete();
+
+        // Log the activity
+        $this->logActivity(
+            'Delete',
+            'users',
+            [
+                'user_id' => $user->user_id,
+                'name' => $user->name,
+            ]
+        );
 
         return redirect()->back()->with('message', 'User deleted successfully!');
     }
+
 
     public function edit_role(Request $request, $user_id)
     {
@@ -72,14 +98,35 @@ class AdminController extends Controller
         ]);
 
         // Find the user by ID
-        $user = User::findOrFail($user_id);
+        $user = User::find($user_id);
+
+        if (!$user) {
+            return redirect()->back()->withErrors('User not found!');
+        }
 
         // Update the user's role
         $user->usertype = $request->input('usertype');
         $user->save();
 
+        // Debugging: Log the fetched user ID and name
+        logger()->info('Fetched User Details', [
+            'user_id' => $user->user_id,
+            'name' => $user->name,
+        ]);
+
+        // Log the activity
+        $this->logActivity(
+            'Edit',
+            'users',
+            [
+                'user_id' => $user->user_id, // Fetch from the $user model
+                'name' => $user->name,  // Fetch from the $user model
+            ]
+        );
+
         // Redirect back with a success message
-        return redirect()->back()->with('message', 'User  role updated successfully.');
+        return redirect()->back()->with('message', 'User role updated successfully.');
     }
+
 
 }

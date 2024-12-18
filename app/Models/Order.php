@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 
 class Order extends Model
@@ -21,7 +22,16 @@ class Order extends Model
         'delivery_status',
     ];
 
-
+    public static function logActivity($user, $action, $details)
+    {
+        activity()
+            ->causedBy($user)
+            ->withProperties([
+                'action_performed' => $action,
+                'details' => $details,
+            ])
+            ->log('Order activity');
+    }
 
     
 }

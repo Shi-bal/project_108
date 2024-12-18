@@ -10,9 +10,16 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Traits\ActivityLogger;
+
+
+
 
 class OrderController extends Controller
 {
+    use ActivityLogger;
+
+    
     public function placeOrder(Request $request)
     {
         // Get the authenticated user
@@ -83,10 +90,19 @@ class OrderController extends Controller
             'phone' => $request->input('phone'),
             'payment_method' => $request->input('payment_method')
         ]);
+
     
-        // Store the order ID in the session for future reference if needed
         session(['order_id' => $order->order_id]);
-    
+        $this->logActivity(
+            'Insert',
+            'orders',
+            [
+                'user_id' => $user->id,
+                'action' => 'place_order'
+            ]
+        );
+
+  
         // Return to the order success page or view
         return redirect()->route('checkout.result');
     }
