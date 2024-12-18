@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 use Illuminate\Database\Eloquent\Model;
 
+use Spatie\Activitylog\Traits\LogsActivity;
+
+
 class Cart extends Model
 {
 
@@ -26,5 +29,16 @@ class Cart extends Model
     public function product()
     {
         return $this->belongsTo(Product::class, 'product_id', 'product_id');
+    }
+
+    public static function logActivity($user, $action, $details)
+    {
+        activity()
+            ->causedBy($user)
+            ->withProperties([
+                'action_performed' => $action,
+                'details' => $details,
+            ])
+            ->log('Cart activity');
     }
 }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class OrderDetail extends Model
 {
@@ -29,5 +30,16 @@ class OrderDetail extends Model
     public function order()
     {
         return $this->belongsTo(Order::class, 'order_id');
+    }
+
+    public static function logActivity($user, $action, $details)
+    {
+        activity()
+            ->causedBy($user)
+            ->withProperties([
+                'action_performed' => $action,
+                'details' => $details,
+            ])
+            ->log('Order Detail activity');
     }
 }

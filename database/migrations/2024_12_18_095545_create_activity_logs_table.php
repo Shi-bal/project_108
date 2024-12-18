@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('activity_logs', function (Blueprint $table) {
             $table->id('log_id');
-            $table->string('usertype')->nullable(); // Replaces `user_id` to log the user's type
-            $table->string('action_performed'); // INSERT, UPDATE, DELETE
-            $table->string('table_name'); // Name of the table where the action occurred
-            $table->string('column_data'); // Column name associated with the action
-            $table->timestamps(0); // Timestamps for when the log was created
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->string('usertype');
+            $table->string('action_performed');
+            $table->string('table_name');
+            $table->json('column_data')->nullable(); // Stores column details as JSON
+            $table->timestamp('created_at')->useCurrent();
         });
-
     }
 
     /**

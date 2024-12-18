@@ -5,9 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth; // Import Auth facade
+use App\Traits\ActivityLogger;
+
+
+
 
 class SellerController extends Controller
 {
+    use ActivityLogger;
+
     // Constructor to check if the user is authenticated and is a seller
     public function __construct()
     {
@@ -67,6 +73,13 @@ class SellerController extends Controller
             ]
         );
 
+        $this->logActivity('INSERT', 'products', [
+            'user_id' => Auth::id(),
+            'product_title' => $request->input('product_title'),
+            'price' => $request->input('price'),
+            'quantity' => $request->input('quantity'),
+        ]);
+
         return redirect()->back()->with('message', 'Product Added Successfully!');
     }
 
@@ -89,6 +102,17 @@ class SellerController extends Controller
         }
 
         DB::table('products')->where('product_id', $product_id)->delete();
+
+        $this->logActivity(
+            'Delete',
+            'products',
+            [
+                'product_id' => $request->product_id,
+                'product_title' => $request->product_title,
+
+            ]
+        );
+
         return redirect()->back()->with('success', 'Product deleted successfully!');
     }
 
@@ -124,7 +148,22 @@ class SellerController extends Controller
             'delivery_status' => 'Delivered',
             'payment_status' => 'Paid',
         ]);
-    
+
+        $this->logActivity(
+            'Update',
+            'orders',
+            [
+                'delivery_status' => 'Delivered',
+                'payment_status' => 'Paid',
+                'action' => 'update_order'
+            ]
+        );
+
+
+        
+        $this->logActivity('Update Order Status', 'orders', $columnData);
+
+     
         return redirect()->back()->with('success', 'Order marked as delivered.');
     }
 }

@@ -10,18 +10,19 @@ use App\Models\Cart;
 use App\Models\Wishlist;
 use App\Models\Order;
 use App\Models\OrderItem;
-
-
-
-
 use Illuminate\Support\Facades\DB;
+use App\Traits\ActivityLogger;
+
 
 
 class HomeController extends Controller
 {
+    use ActivityLogger;
 
+ 
     public function index()
     {
+        
         // Fetch data from the 'popular_products' view
         $popularProducts = DB::table('popular_products')->get();
 
@@ -109,15 +110,27 @@ class HomeController extends Controller
     
         // Add the product to the wishlist using a raw query
         DB::table('wishlists')->insert([
-            'user_id' => $userId,
-            'product_id' => $productId,
+            'user_id' => $userId, // Use the correct variable
+            'product_id' => $productId, // Use the correct variable
             'created_at' => now(),
             'updated_at' => now(),
         ]);
     
+        // Log the activity
+        $this->logActivity(
+            'Insert',
+            'wishlists',
+            [
+                'user_id' => $userId, // Use the correct variable
+                'product_title' => $product->product_title, // Fetch product title
+                'action' => 'add_to_wishlist',
+            ]
+        );
+    
         return redirect()->back()->with('message', 'Product added to wishlist successfully!');
     }
 
+    
     public function view_wishlist()
     {
         // Ensure the user is logged in
@@ -146,6 +159,12 @@ class HomeController extends Controller
     
             if ($wishlist) {
                 $wishlist->delete();
+                  // Log the action
+                $this->logActivity('DELETE', 'wishlists', [
+                    'user_id' => Auth::id(),
+                    'wishlist_id' => $wishlist_id,
+                ]);
+
                 return redirect()->back()->with('message', 'Product removed from wishlist');
             } else {
                 return redirect()->back()->with('error', 'Product not found or does not belong to you.');
@@ -178,6 +197,8 @@ class HomeController extends Controller
     
             // Ensure quantity is a valid number
             $quantity = $request->quantity ?: 1; // Default to 1 if quantity is not provided
+
+        
     
             // Check if the cart already has the same product and size combination
             $existingCartItem = Cart::where('user_id', $user->user_id)
@@ -198,7 +219,19 @@ class HomeController extends Controller
                 $cart->quantity = $quantity;
                 $cart->save();
             }
-    
+
+            $this->logActivity(
+                'Insert',
+                'carts',
+                [
+                    'user_id' => $user->user_id,
+                    'name' => $user->name,
+                    'product_title' => $product->product_title,
+                    'quantity' => $request->quantity,
+                    'action' => 'add_to_cart'
+                ]
+            );
+
             return redirect()->back()->with('message', 'Product added to cart successfully!');
         } else {
             return redirect()->route('login')->with('error', 'Please log in to add items to the cart.');
@@ -235,7 +268,23 @@ class HomeController extends Controller
             $cart = Cart::where('cart_id', $cart_id)->where('user_id', $user_id)->first();
     
             if ($cart) {
+
+                $user = User::find($cart->user_id);
+
+                $this->logActivity(
+                    'Delete',
+                    'carts',
+                    [
+                        'user_id' => $cart->user_id,
+                        'name' => $user ? $user->name : 'Unknown',  // Log the user's name
+                        'product_title' => $cart->product_title,  // Log the product title
+                        'action' => 'remove_from_cart'
+                    ]
+                );
+
                 $cart->delete();
+
+
                 return redirect()->back()->with('message', 'Product removed from cart');
             } else {
                 return redirect()->back()->with('error', 'Product not found or does not belong to you.');
