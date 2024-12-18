@@ -54,25 +54,25 @@
                 </thead>
                 <tbody>
                     @foreach($users as $user)
-                    <tr class="border-b text-black">
+                    <tr class="border-b text-gray-600">
                         <td class="px-6 py-4">{{$user->name}}</td>
                         <td class="px-6 py-4">{{$user->email}}</td>
                         <td class="px-6 py-4">{{$user->created_at}}</td>
                         <td class="px-6 py-4">
                             {{$user->usertype}}
                             <button class="edit-button text-sm font-medium hover:underline text-gray-600" onclick="toggleEditForm('{{ $user->user_id }}')">
-                                <i class="fa-solid fa-x me-1.5 text-gray-600"></i>Edit
+                                <i class="fa-solid fa-x me-1.5"></i>Edit
                             </button>
 
                             <form id="edit-form-{{ $user->user_id }}" action="{{ route('user.edit_role', $user->user_id) }}" action="" method="POST" style="display: none;">
                                 @csrf
                                 @method('PUT') <!-- Use PUT for updates -->
-                                <select name="usertype" required class="mt-2 w-20 text-sm rounded-lg">
-                                    <option value="admin" {{ $user->usertype == 'admin' ? 'selected' : '' }}>Admin</option>
-                                    <option value="seller" {{ $user->usertype == 'seller' ? 'selected' : '' }}>Seller</option>
-                                    <option value="user" {{ $user->usertype == 'user' ? 'selected' : '' }}>User </option>
+                                <select name="usertype" required class="mt-2 w-30 text-sm rounded-lg">
+                                    <option value="admin" {{ $user->usertype == 'admin' ? 'selected' : '' }}>admin</option>
+                                    <option value="seller" {{ $user->usertype == 'seller' ? 'selected' : '' }}>seller</option>
+                                    <option value="user" {{ $user->usertype == 'user' ? 'selected' : '' }}>user </option>
                                 </select>
-                                <button type="submit" class="text-sm font-medium hover:underline text-gray-600">
+                                <button type="submit" class="text-sm font-medium hover:underline">
                                     <i class="fa-solid fa-x me-1.5 text-gray-600"></i>Submit
                                 </button>
                             </form>

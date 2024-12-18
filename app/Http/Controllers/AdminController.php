@@ -41,7 +41,7 @@ class AdminController extends Controller
         }
 
         // Fetch all activity logs
-        $activityLogs = DB::table('activity_logs')->get();
+        $activityLogs = DB::table('activity_logs')->orderBy('created_at', 'desc')->get();
         return view('admin.activity_logs', compact('activityLogs'));
     }
 

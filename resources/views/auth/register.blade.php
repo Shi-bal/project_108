@@ -51,6 +51,7 @@
                     <input type="password" name="password_confirmation" id="password_confirmation" class="pl-12 mb-2 bg-gray-50 text-gray-600 border border-gray-300 sm:text-sm rounded-lg focus:ring-1 focus:ring-gray-400 block w-full p-2.5" placeholder="••••••••••" required autocomplete="new-password" maxlength="25" pattern="[A-Za-z0-9]+">
                 </div>
                 <p id="password-error" class="text-red-500 text-sm mt-2 hidden">Passwords do not match</p>
+                <p id="password-requirements" class="text-red-500 text-sm mt-2 hidden">Password must be at least 8 characters long and include a number</p>
             </div>
 
             @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
@@ -93,14 +94,29 @@
         const passwordConfirmation = document.getElementById('password_confirmation');
         const form = password.closest('form');
         const passwordError = document.getElementById('password-error');
+        const passwordRequirements = document.getElementById('password-requirements');
 
         form.addEventListener('submit', function (event) {
+            let valid = true;
+
             if (password.value !== passwordConfirmation.value) {
                 event.preventDefault();
                 passwordError.classList.remove('hidden');
+                valid = false;
             } else {
                 passwordError.classList.add('hidden');
             }
+
+            const passwordPattern = /^(?=.*[0-9]).{8,}$/;
+            if (!passwordPattern.test(password.value)) {
+                event.preventDefault();
+                passwordRequirements.classList.remove('hidden');
+                valid = false;
+            } else {
+                passwordRequirements.classList.add('hidden');
+            }
+
+            return valid;
         });
     });
 </script>

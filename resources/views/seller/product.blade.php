@@ -92,18 +92,6 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    const button = document.querySelector('[data-drawer-toggle="default-sidebar"]');
-    const sidebar = document.getElementById('default-sidebar');
-    const dashboardLink = document.getElementById('dashboard-link');
-
-    button.addEventListener('click', function () {
-        sidebar.classList.toggle('-translate-x-full');
-    });
-
-    dashboardLink.addEventListener('click', function () {
-        sidebar.classList.add('-translate-x-full');
-    });
-
     const alert = document.querySelector('[data-dismiss="alert"]').closest('.flex');
     if (alert) {
         setTimeout(function () {
@@ -112,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function () {
             setTimeout(function () {
                 alert.style.display = 'none';
             }, 1000);
-        }, 3000);
+        }, 2000);
     }
 });
 function closeAlert() {
@@ -120,6 +108,8 @@ function closeAlert() {
     alert.style.display = 'none';
 }
 </script>
+
+
 
     </body>
 </html>

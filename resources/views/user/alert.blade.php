@@ -43,6 +43,6 @@ document.addEventListener('DOMContentLoaded', function () {
             alert.style.opacity = '0';
             setTimeout(() => alert.remove(), 500);
         });
-    }, 3000);
+    }, 1500);
 });
 </script>

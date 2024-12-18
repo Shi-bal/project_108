@@ -22,12 +22,12 @@
                     </button>
 
                     <!-- Dropdown Menu -->
-                    <div class="origin-top-right absolute right-0 mt-2 w-32 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-focus-within:opacity-100 group-focus-within:visible transition-all duration-200">
+                    <div class="absolute right-0 mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-focus-within:opacity-100 group-focus-within:visible transition-all duration-200">
                         <div class="py-1" role="menu" aria-orientation="vertical">
                             @if (Route::has('login'))
                                 @auth
                                     <!-- Logout Option -->
-                                    <form method="POST" action="{{ route('logout') }}" class="hover:bg-gray-100">
+                                    <form class="hover:bg-gray-100" method="POST" action="{{ route('logout') }}">
                                         @csrf
                                         <button type="submit" class="font-semibold block px-4 py-2 text-sm text-gray-700" role="menuitem">
                                             Logout
