@@ -5,20 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use App\Traits\ActivityLogger;
-
-
-
 use App\Models\User;
 
 class AdminController extends Controller
 {
-    use ActivityLogger;
 
     public function __construct()
     {
         // No middleware needed here
     }
+
 
     public function top_buyer()
     {
@@ -54,39 +50,45 @@ class AdminController extends Controller
 
         $users = DB::table('users')->get();
 
-        
-
         return view ('admin.show_users', compact('users'));
     }
 
     public function remove_user($user_id)
     {
-        // Check if the user is authenticated and has admin privileges
+        // Check if the user is authenticated and is an admin
         if (Auth::check() && Auth::user()->usertype != 'admin') {
             return redirect('/'); // Redirect if not an admin
         }
 
-        // Retrieve the user details before deletion
+        // Get the ID of the user performing the deletion
+        $updatedById = auth()->id();
+
+        // Fetch the user to be deleted
         $user = DB::table('users')->where('user_id', $user_id)->first();
 
-        if (!$user) {
-            return redirect()->back()->with('error', 'User not found.');
+        $user->updated_by = $updatedById;
+        $updatedByRole = User::where('user_id', $updatedById)->value('usertype');
+
+        // Check if the user exists before attempting to delete
+        if ($user) {
+            // Delete the user
+            DB::table('users')->where('user_id', $user_id)->delete();
+
+            // Log the deletion in the activity_logs table
+            DB::table('activity_logs')->insert([
+                'updated_by' => $updatedById,
+                'usertype' => $updatedByRole,
+                'action_performed' => 'DELETE',
+                'table_name' => 'users',
+                'column_data' => 'Deleted user',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            return redirect()->back()->with('message', 'User  deleted successfully!');
         }
 
-        // Delete the user
-        DB::table('users')->where('user_id', $user_id)->delete();
-
-        // Log the activity
-        $this->logActivity(
-            'Delete',
-            'users',
-            [
-                'user_id' => $user->user_id,
-                'name' => $user->name,
-            ]
-        );
-
-        return redirect()->back()->with('message', 'User deleted successfully!');
+        return redirect()->back()->with('error', 'User  not found!');
     }
 
 
@@ -104,25 +106,29 @@ class AdminController extends Controller
             return redirect()->back()->withErrors('User not found!');
         }
 
+        $oldUserType = $user->usertype;
+
+        // Set the ID of the currently authenticated user
+        $updatedById = auth()->id();
+
         // Update the user's role
+        $user->updated_by = $updatedById; // Set to the ID of the currently authenticated user
         $user->usertype = $request->input('usertype');
         $user->save();
 
-        // Debugging: Log the fetched user ID and name
-        logger()->info('Fetched User Details', [
-            'user_id' => $user->user_id,
-            'name' => $user->name,
-        ]);
+        // Retrieve the usertype of the user who performed the action
+        $updatedByRole = User::where('user_id', $updatedById)->value('usertype');
 
         // Log the activity
-        $this->logActivity(
-            'Edit',
-            'users',
-            [
-                'user_id' => $user->user_id, // Fetch from the $user model
-                'name' => $user->name,  // Fetch from the $user model
-            ]
-        );
+        DB::table('activity_logs')->insert([
+            'updated_by' => $updatedById,
+            'usertype' => $updatedByRole,
+            'action_performed' => 'UPDATE',
+            'table_name' => 'users',
+            'column_data' => "Old usertype: {$oldUserType}, New usertype: {$user->usertype}",
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
 
         // Redirect back with a success message
         return redirect()->back()->with('message', 'User role updated successfully.');

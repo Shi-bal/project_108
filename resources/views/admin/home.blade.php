@@ -12,8 +12,13 @@
         <title>UP TREND</title>
     </head>
 
-    <body>
+    <body class=" bg-slate-100">
     @include('admin.navbar')
+    <div class="p-4 sm:ml-64">
+        <div class="grid grid-cols-3 space-x-4">
+                
+            </div>
+    </div>
 
     </body>
 </html>

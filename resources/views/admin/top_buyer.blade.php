@@ -23,7 +23,7 @@
 
 <div class="p-4 sm:ml-64">
 <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
-    <h2 class="text-xl font-semibold text-gray-900 sm:text-2xl m-5">Orders</h2>
+    <h2 class="text-xl font-semibold text-gray-900 sm:text-2xl m-5">Top Buyers</h2>
     <div class="m-4">
     <table class="w-full text-sm text-left mt-5 border-2">
     <thead class="uppercase">

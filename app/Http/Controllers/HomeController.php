@@ -11,13 +11,9 @@ use App\Models\Wishlist;
 use App\Models\Order;
 use App\Models\OrderItem;
 use Illuminate\Support\Facades\DB;
-use App\Traits\ActivityLogger;
-
-
 
 class HomeController extends Controller
 {
-    use ActivityLogger;
 
  
     public function index()
@@ -107,6 +103,8 @@ class HomeController extends Controller
         if ($existingWishlistItem) {
             return redirect()->back()->with('message', 'This product is already in your wishlist.');
         }
+
+        $updatedById = auth()->id();
     
         // Add the product to the wishlist using a raw query
         DB::table('wishlists')->insert([
@@ -114,18 +112,8 @@ class HomeController extends Controller
             'product_id' => $productId, // Use the correct variable
             'created_at' => now(),
             'updated_at' => now(),
+            'updated_by' => $updatedById
         ]);
-    
-        // Log the activity
-        $this->logActivity(
-            'Insert',
-            'wishlists',
-            [
-                'user_id' => $userId, // Use the correct variable
-                'product_title' => $product->product_title, // Fetch product title
-                'action' => 'add_to_wishlist',
-            ]
-        );
     
         return redirect()->back()->with('message', 'Product added to wishlist successfully!');
     }
@@ -159,11 +147,6 @@ class HomeController extends Controller
     
             if ($wishlist) {
                 $wishlist->delete();
-                  // Log the action
-                $this->logActivity('DELETE', 'wishlists', [
-                    'user_id' => Auth::id(),
-                    'wishlist_id' => $wishlist_id,
-                ]);
 
                 return redirect()->back()->with('message', 'Product removed from wishlist');
             } else {
@@ -205,6 +188,8 @@ class HomeController extends Controller
                 ->where('product_id', $product->product_id)
                 ->where('size', $request->size)
                 ->first();
+
+            $updatedById = auth()->id();
     
             if ($existingCartItem) {
                 // If the item already exists, update the quantity
@@ -217,20 +202,9 @@ class HomeController extends Controller
                 $cart->product_id = $product->product_id;
                 $cart->size = $request->size;
                 $cart->quantity = $quantity;
+                $cart->updated_by = $updatedById;
                 $cart->save();
             }
-
-            $this->logActivity(
-                'Insert',
-                'carts',
-                [
-                    'user_id' => $user->user_id,
-                    'name' => $user->name,
-                    'product_title' => $product->product_title,
-                    'quantity' => $request->quantity,
-                    'action' => 'add_to_cart'
-                ]
-            );
 
             return redirect()->back()->with('message', 'Product added to cart successfully!');
         } else {
@@ -268,22 +242,7 @@ class HomeController extends Controller
             $cart = Cart::where('cart_id', $cart_id)->where('user_id', $user_id)->first();
     
             if ($cart) {
-
-                $user = User::find($cart->user_id);
-
-                $this->logActivity(
-                    'Delete',
-                    'carts',
-                    [
-                        'user_id' => $cart->user_id,
-                        'name' => $user ? $user->name : 'Unknown',  // Log the user's name
-                        'product_title' => $cart->product_title,  // Log the product title
-                        'action' => 'remove_from_cart'
-                    ]
-                );
-
                 $cart->delete();
-
 
                 return redirect()->back()->with('message', 'Product removed from cart');
             } else {

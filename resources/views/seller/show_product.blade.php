@@ -31,7 +31,7 @@
                         <th scope="col" class="px-6 py-3">Quantity</th>
                         <th scope="col" class="px-6 py-3">Price</th>
                         <th scope="col" class="px-6 py-3 text-center"></th>
-                        <th scope="col" class="px-6 py-3 text-center"></th>
+                        <th scope="col" class="px-6 py-3 text-center">Images</th>
                         <th scope="col" class="px-6 py-3 text-center"></th>
                         <!-- <th scope="col" class="px-6 py-3 text-center">Action</th> -->
 
@@ -45,13 +45,13 @@
                         <td class="px-6 py-4 text-center">{{$product->quantity}}</td>
                         <td class="px-6 py-4">₱{{number_format($product->price)}}</td>
                         <td class="px-1 py-4">
-                            <img class="" src="/product/{{$product->image1}}">
+                            <img class="size-60 object-cover" src="/product/{{$product->image1}}">
                         </td>
                         <td class="px-1 py-4">
-                            <img class="" src="/product/{{$product->image2}}">
+                            <img class="size-60 object-cover" src="/product/{{$product->image2}}">
                         </td>
                         <td class="px-1 py-4">
-                            <img class="" src="/product/{{$product->image3}}">
+                            <img class="size-60 object-cover" src="/product/{{$product->image3}}">
                         </td>
 
                         <!-- <td>

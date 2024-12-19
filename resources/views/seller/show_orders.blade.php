@@ -29,7 +29,7 @@
                             $product_images = explode(', ', $order->product_images); 
                             $image = $product_images[0];  // Get the first image
                         @endphp
-                        <img class="h-40" src="{{ URL('product/' . $image) }}" alt="Product" class="object-cover size-14 hover-image pb-[2px] hover:bg-black">
+                        <img class="size-60 object-cover" src="{{ URL('product/' . $image) }}" alt="Product" class="object-cover size-14 hover-image pb-[2px] hover:bg-black">
                     </a>
                     <div class="grid grid-cols-5 w-full">
                         <div class="col-span-2">

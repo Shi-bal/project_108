@@ -10,16 +10,11 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use App\Traits\ActivityLogger;
-
-
 
 
 class OrderController extends Controller
 {
-    use ActivityLogger;
 
-    
     public function placeOrder(Request $request)
     {
         // Get the authenticated user
@@ -49,6 +44,8 @@ class OrderController extends Controller
     
         // Get the size from the cart (assuming all items in the cart have the same size for simplicity)
         $size = $cartItems->first()->size;
+
+        $updatedById = auth()->id();
     
         // Create a new order with total price and other order details
         $order = Order::create([
@@ -56,6 +53,7 @@ class OrderController extends Controller
             'total_price' => $totalAmount,
             'payment_status' => 'Pending', // Default value
             'delivery_status' => 'Pending', // Default value
+            'updated_by' => $updatedById
         ]);
     
         // Insert items into the order_items table
@@ -71,6 +69,7 @@ class OrderController extends Controller
                 'size' => $cart->size,
                 'quantity' => $cart->quantity,
                 'price' => $price,
+                'updated_by' => $updatedById
             ]);
         }
     
@@ -88,21 +87,12 @@ class OrderController extends Controller
             'city' => $request->input('full_city'),
             'barangay' => $request->input('full_barangay'),
             'phone' => $request->input('phone'),
-            'payment_method' => $request->input('payment_method')
+            'payment_method' => $request->input('payment_method'),
         ]);
 
     
         session(['order_id' => $order->order_id]);
-        $this->logActivity(
-            'Insert',
-            'orders',
-            [
-                'user_id' => $user->id,
-                'action' => 'place_order'
-            ]
-        );
 
-  
         // Return to the order success page or view
         return redirect()->route('checkout.result');
     }
