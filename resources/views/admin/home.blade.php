@@ -16,8 +16,20 @@
     @include('admin.navbar')
     <div class="p-4 sm:ml-64">
         <div class="grid grid-cols-3 space-x-4">
-                
+                <div class="bg-white p-4 rounded-md">
+                    <p class="text-lg font-bold">Available Users:</p>
+                    <p>{{ $userCount }}</p>
+                </div>
+                <div class="bg-white p-4 rounded-md">
+                    <p class="text-lg font-bold"">Total Orders:</p>
+                    <p>{{ $orderCount }}</p>
+                </div>
+                <div class="bg-white p-4 rounded-md">
+                    <p class="text-lg font-bold"">Total Sales:</p>
+                    <p>₱{{ $totalSales }}</p>
+                </div>
             </div>
+            
     </div>
 
     </body>

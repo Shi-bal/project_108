@@ -38,7 +38,7 @@ class HomeController extends Controller
 
         switch ($user->usertype) {
             case 'admin':
-                return view('admin.home');
+                return redirect()->route('dashboard');
             case 'seller':
                 return view('seller.home');
             default:

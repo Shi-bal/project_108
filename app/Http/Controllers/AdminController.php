@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Order;
+
 
 class AdminController extends Controller
 {
@@ -13,6 +15,16 @@ class AdminController extends Controller
     public function __construct()
     {
         // No middleware needed here
+    }
+    
+    public function dashboard()
+    {
+        $userCount = User::count();
+        $orderCount = Order::count();
+        $totalSales = Order::sum('total_price');
+
+        // Proceed with the function if user is an admin
+        return view('admin.home', compact('userCount', 'orderCount', 'totalSales'));
     }
 
 

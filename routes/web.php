@@ -92,7 +92,7 @@ Route::get('/checkout_result', [OrderController::class, 'checkout_result'])->nam
 
 
 //ADMIN ROUTES
-
+Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 Route::get('/view_top_buyer', [AdminController::class, 'top_buyer']);
 
 Route::get('/activity-logs', [AdminController::class, 'activity_logs'])->name('activity.logs');
