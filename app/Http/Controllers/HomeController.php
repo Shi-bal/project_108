@@ -39,9 +39,20 @@ class HomeController extends Controller
             return redirect()->route('login')->with('error', 'You need to log in first.');
         }
 
+        // Fetch top 5 buyers
+        //$topBuyers = Buyer::orderBy('total_spent', 'desc')->take(5)->get();
+
+        $activityLogs = DB::table('activity_logs')
+            ->orderBy('created_at', 'desc') // Order by the created_at column in descending order
+            ->take(5) // Take the latest 5 records
+            ->get();
+
+        // Fetch top 5 users
+        $topUsers = User::orderBy('created_at', 'desc')->take(5)->get();
+
         switch ($user->usertype) {
             case 'admin':
-                return view('admin.home');
+                return view('admin.home', compact('activityLogs', 'topUsers'));
             case 'seller':
                 return view('seller.home');
             default:
