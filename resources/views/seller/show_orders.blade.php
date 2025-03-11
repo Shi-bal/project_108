@@ -26,7 +26,7 @@
                     <a href="#" class="">
                         <!-- Display the first image in the product_images string -->
                         @php
-                            $product_images = explode(', ', $order->product_images); 
+                            $product_images = explode(', ', $order->product_images);
                             $image = $product_images[0];  // Get the first image
                         @endphp
                         <img class="size-60 object-cover" src="{{ URL('product/' . $image) }}" alt="Product" class="object-cover size-14 hover-image pb-[2px] hover:bg-black">

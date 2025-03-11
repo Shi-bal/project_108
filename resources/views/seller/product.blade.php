@@ -64,15 +64,15 @@
                                 </div>
                                 <div class="space-y-2 text-sm">
                                     <label class="font-medium text-gray-900">Product Image 1:</label>
-                                    <input type="file" name="image1" required>
+                                    <input type="file" name="image1" accept="image/*" required>
                                 </div>
                                 <div class="space-y-2 text-sm">
                                     <label class="font-medium text-gray-900">Product Image 2:</label>
-                                    <input type="file" name="image2" required>
+                                    <input type="file" name="image2" accept="image/*" required>
                                 </div>
                                 <div class="space-y-2 text-sm">
                                     <label class="font-medium text-gray-900">Product Image 3:</label>
-                                    <input type="file" name="image3" required>
+                                    <input type="file" name="image3" accept="image/*" required>
                                 </div>
                             </div>
                             <div class="flex justify-center">

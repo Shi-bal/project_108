@@ -26,7 +26,7 @@ class OrderController extends Controller
         // Check if there are items in the cart
         if ($cartItems->isEmpty()) {
             session()->flash('message', 'Your cart is empty.');
-            return redirect()->route('user.checkout'); 
+            return redirect()->route('user.checkout');
         }
     
         // Calculate the total price for the order
